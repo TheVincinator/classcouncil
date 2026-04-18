@@ -1,70 +1,111 @@
-# Getting Started with Create React App
+# Cornell Class Councils Website
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The official website for Cornell University Class Councils — fostering class unity, tradition, and leadership.
 
-## Available Scripts
+## Tech Stack
 
-In the project directory, you can run:
+**Frontend:** React, Tailwind CSS, Framer Motion, React Router  
+**Backend:** Python, Flask, Gunicorn  
+**Deployment:** Vercel (frontend), Render (backend)
 
-### `npm start`
+## Pages
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Home** — Hero section, mission statement, and Instagram CTA
+- **Events** — Featured events and live upcoming/past events pulled from CampusGroups
+- **Leadership Team** — Grid of current team members with optional headshots
+- **About Us** — Mission, what we do, and team overview
+- **Apply** — Recruitment timeline and application form (togglable)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Project Structure
 
-### `npm test`
+```
+classcouncil/
+├── public/               # Static assets (images, favicon)
+├── src/
+│   ├── App.js            # Routes
+│   ├── Navbar.js         # Navigation with mobile hamburger menu
+│   ├── Footer.js         # Social media links
+│   ├── ScrollToTop.js    # Scroll to top on route change
+│   ├── NotFound.js       # 404 page
+│   ├── Home.js
+│   ├── Events.js
+│   ├── EventCard.js
+│   ├── Team.js
+│   ├── Aboutus.js
+│   └── Join.js
+├── backend/
+│   ├── app.py            # Flask API
+│   └── requirements.txt
+└── .env.local            # Local environment variables (not committed)
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Local Development
 
-### `npm run build`
+### Prerequisites
+- Node.js
+- Python 3
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Frontend
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+npm install
+npm start
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Runs on `http://localhost:3000`
 
-### `npm run eject`
+### Backend
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate      # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+python app.py
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Runs on `http://localhost:5000`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Environment Variables
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Create a `.env.local` file in the project root:
 
-## Learn More
+```
+REACT_APP_API_URL=http://localhost:5000
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Deployment
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Frontend — Vercel
+1. Import the repo on [vercel.com](https://vercel.com)
+2. Add environment variable: `REACT_APP_API_URL=<your-render-url>`
+3. Deploy
 
-### Code Splitting
+### Backend — Render
+1. Create a new Web Service on [render.com](https://render.com)
+2. Set **Root Directory** to `backend`
+3. Set **Build Command** to `pip install -r requirements.txt`
+4. Set **Start Command** to `gunicorn app:app`
+5. Deploy
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Events
 
-### Analyzing the Bundle Size
+Live events are fetched from CampusGroups via their ICS feed. Past events that have aged out of the feed are preserved in `manual_past_events` in `backend/app.py`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Recruitment
 
-### Making a Progressive Web App
+To open/close the application form, update the flag at the top of `src/Join.js`:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```js
+const APPLICATIONS_OPEN = false; // set to true when recruitment opens
+```
 
-### Advanced Configuration
+## Team Photos
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+To add headshots on the Leadership Team page, add a `photo` filename to the member's entry in `src/Team.js`:
 
-### Deployment
+```js
+{ name: "Jane Doe", role: "President", photo: "janedoe.png" }
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Then place the image file in the `public/` folder.
