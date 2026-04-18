@@ -146,10 +146,18 @@ def events_api():
         }
     ]
 
-    past.extend(manual_past_events)
+    # Add manual past events, skipping any that are already in the ICS feed
+    ics_titles = {e["title"].lower() for e in past}
+    for event in manual_past_events:
+        if event["title"].lower() not in ics_titles:
+            past.append(event)
 
-    upcoming.sort(key=lambda e: e["start"])
-    past.sort(key=lambda e: e["start"], reverse=True)
+    # Parse start times properly before sorting to handle mixed ISO formats
+    def parse_start(e):
+        return datetime.fromisoformat(e["start"].replace("Z", "+00:00"))
+
+    upcoming.sort(key=parse_start)
+    past.sort(key=parse_start, reverse=True)
 
     # Limit past events to last 10 only
     # past = past[:10]
