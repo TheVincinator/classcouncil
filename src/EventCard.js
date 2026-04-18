@@ -45,16 +45,15 @@ export default function EventCard({ event }) {
       className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col md:flex-row"
     >
       {/* Image */}
-<div className="md:w-2/5 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden">
-  <img
-    src={event.image || "/default.jpg"}
-    alt={event.title}
-    className="w-full h-auto"
-    onError={(e) => {
-      e.target.src = "/default.jpg";
-    }}
-  />
-</div>
+      {event.image && (
+        <div className="md:w-2/5 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden">
+          <img
+            src={event.image}
+            alt={event.title}
+            className="w-full h-auto"
+          />
+        </div>
+      )}
 
       {/* Content */}
       <div className="flex-1 p-6 flex flex-col justify-between">
