@@ -47,8 +47,8 @@ function Team() {
         <div className="min-h-screen bg-gray-50 py-20 px-6">
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-16 text-center">
-              {team.map((member, index) => (
-                <div key={index} className="flex flex-col items-center">
+              {team.map((member) => (
+                <div key={member.name} className="flex flex-col items-center">
 
                   {/* Profile photo or placeholder */}
                   <div className="w-40 h-40 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center">

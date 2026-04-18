@@ -22,6 +22,36 @@ const ImageDescription = ({ imageSrc, title, description, reverse }) => (
   </div>
 );
 
+const EventsSection = ({ title, items, isPast, loading, error }) => (
+  <>
+    <h2 className="text-3xl font-bold mt-20 mb-8">{title}</h2>
+    {loading ? (
+      <p className="text-gray-500">Loading events...</p>
+    ) : error ? (
+      <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl px-6 py-4">
+        Unable to load events right now. Check our{" "}
+        <a
+          href="https://www.instagram.com/cuclasscouncils"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline font-medium"
+        >
+          Instagram
+        </a>{" "}
+        for the latest updates.
+      </div>
+    ) : items.length > 0 ? (
+      <div className="grid gap-8">
+        {items.map((event) => (
+          <EventCard key={event.url || event.title} event={event} isPast={isPast} />
+        ))}
+      </div>
+    ) : (
+      <p className="text-gray-500">No {title.toLowerCase()} at this time.</p>
+    )}
+  </>
+);
+
 export default function Events() {
   const [events, setEvents] = useState({ upcoming: [], past: [] });
   const [loading, setLoading] = useState(true);
@@ -75,35 +105,6 @@ export default function Events() {
     },
   ];
 
-  const EventsSection = ({ title, items, isPast }) => (
-    <>
-      <h2 className="text-3xl font-bold mt-20 mb-8">{title}</h2>
-      {loading ? (
-        <p className="text-gray-500">Loading events...</p>
-      ) : error ? (
-        <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl px-6 py-4">
-          Unable to load events right now. Check our{" "}
-          <a
-            href="https://www.instagram.com/cuclasscouncils"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline font-medium"
-          >
-            Instagram
-          </a>{" "}
-          for the latest updates.
-        </div>
-      ) : items.length > 0 ? (
-        <div className="grid gap-8">
-          {items.map((event) => (
-            <EventCard key={event.url || event.title} event={event} isPast={isPast} />
-          ))}
-        </div>
-      ) : (
-        <p className="text-gray-500">No {title.toLowerCase()} at this time.</p>
-      )}
-    </>
-  );
 
   return (
     <div>
@@ -137,8 +138,8 @@ export default function Events() {
 
       {/* Dynamic Calendar Events */}
       <div className="max-w-6xl mx-auto px-6 py-16">
-        <EventsSection title="Upcoming Events" items={events.upcoming} isPast={false} />
-        <EventsSection title="Past Events" items={events.past} isPast={true} />
+        <EventsSection title="Upcoming Events" items={events.upcoming} isPast={false} loading={loading} error={error} />
+        <EventsSection title="Past Events" items={events.past} isPast={true} loading={loading} error={error} />
       </div>
 
       <Footer />
