@@ -4,6 +4,9 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 from icalendar import Calendar
 from bs4 import BeautifulSoup
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
@@ -135,6 +138,9 @@ def events_api():
         if uid in seen_uids:
             continue
         seen_uids.add(uid)
+
+        if not component.get("dtstart") or not component.get("dtend"):
+            continue
 
         start = make_aware(component.get("dtstart").dt)
         end = make_aware(component.get("dtend").dt)

@@ -95,8 +95,8 @@ export default function Events() {
         </div>
       ) : items.length > 0 ? (
         <div className="grid gap-8">
-          {items.map((event, index) => (
-            <EventCard key={index} event={event} />
+          {items.map((event) => (
+            <EventCard key={event.url || event.title} event={event} />
           ))}
         </div>
       ) : (
