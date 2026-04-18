@@ -21,7 +21,7 @@ function Home() {
           <img
             className="w-full h-full object-cover"
             src="classphoto.png"
-            alt="Cornell Class Council group photo"
+            alt="Cornell Class Council members gathered on campus"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/60"></div>
         </div>
