@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, MapPin } from "lucide-react";
 
 
-export default function EventCard({ event }) {
+export default function EventCard({ event, isPast }) {
+  const [imageError, setImageError] = useState(false);
 	const startDate = new Date(event.start);
 	const endDate = new Date(event.end);
 
@@ -45,12 +47,13 @@ export default function EventCard({ event }) {
       className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col md:flex-row"
     >
       {/* Image */}
-      {event.image && (
+      {event.image && !imageError && (
         <div className="md:w-2/5 bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden">
           <img
             src={event.image}
             alt={event.title}
             className="w-full h-auto"
+            onError={() => setImageError(true)}
           />
         </div>
       )}
@@ -98,14 +101,20 @@ export default function EventCard({ event }) {
         {/* Button */}
         {event.url && (
           <div className="mt-6">
-            <a
-              href={event.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block bg-red-600 text-white px-5 py-2 rounded-xl hover:bg-red-700 transition"
-            >
-              Register
-            </a>
+            {isPast ? (
+              <span className="inline-block bg-gray-200 text-gray-400 px-5 py-2 rounded-xl cursor-not-allowed">
+                Registration Closed
+              </span>
+            ) : (
+              <a
+                href={event.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block bg-red-600 text-white px-5 py-2 rounded-xl hover:bg-red-700 transition"
+              >
+                Register
+              </a>
+            )}
           </div>
         )}
       </div>

@@ -75,7 +75,7 @@ export default function Events() {
     },
   ];
 
-  const EventsSection = ({ title, items }) => (
+  const EventsSection = ({ title, items, isPast }) => (
     <>
       <h2 className="text-3xl font-bold mt-20 mb-8">{title}</h2>
       {loading ? (
@@ -96,7 +96,7 @@ export default function Events() {
       ) : items.length > 0 ? (
         <div className="grid gap-8">
           {items.map((event) => (
-            <EventCard key={event.url || event.title} event={event} />
+            <EventCard key={event.url || event.title} event={event} isPast={isPast} />
           ))}
         </div>
       ) : (
@@ -137,8 +137,8 @@ export default function Events() {
 
       {/* Dynamic Calendar Events */}
       <div className="max-w-6xl mx-auto px-6 py-16">
-        <EventsSection title="Upcoming Events" items={events.upcoming} />
-        <EventsSection title="Past Events" items={events.past} />
+        <EventsSection title="Upcoming Events" items={events.upcoming} isPast={false} />
+        <EventsSection title="Past Events" items={events.past} isPast={true} />
       </div>
 
       <Footer />
