@@ -6,13 +6,13 @@ const Footer = () => {
     <footer className="w-full bg-red-200 bg-opacity-90 backdrop-blur-lg shadow-md z-50 py-8">
       <div className="flex flex-col items-center justify-center space-y-4">
         <div className="flex space-x-6 text-2xl text-gray-700">
-          <a href="https://www.instagram.com/cuclasscouncils" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.instagram.com/cuclasscouncils" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
             <FaInstagram />
           </a>
-          <a href="https://www.tiktok.com/@cuclasscouncils" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.tiktok.com/@cuclasscouncils" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
             <FaTiktok />
           </a>
-          <a href="https://www.linkedin.com/company/cuclasscouncils" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.linkedin.com/company/cuclasscouncils" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
             <FaLinkedin />
           </a>
         </div>
