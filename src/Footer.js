@@ -16,7 +16,6 @@ const Footer = () => {
             <FaLinkedin />
           </a>
         </div>
-        <p className="text-gray-600 text-sm">Social Media Links</p>
       </div>
     </footer>
   );

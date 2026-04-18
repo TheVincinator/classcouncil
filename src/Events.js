@@ -1,18 +1,20 @@
-import logo from "./logo.svg";
-import "./App.css";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import EventCard from "./EventCard";
 
-// ImageDescription component
 const ImageDescription = ({ imageSrc, title, description, reverse }) => (
-  <div className={`flex flex-col md:flex-row ${reverse ? "md:flex-row-reverse" : ""} items-center my-12`}>
-    <img
-      src={imageSrc}
-      alt={title}
-      loading="lazy"
-      className="w-full md:w-1/2 rounded-xl shadow-xl transform hover:scale-105 transition-transform duration-300"
-    />
+  <div className={`flex flex-col md:flex-row ${reverse ? "md:flex-row-reverse" : ""} items-center my-12 gap-8`}>
+    <div className="w-full md:w-1/2 group">
+      <div className="relative overflow-hidden rounded-2xl shadow-2xl">
+        <img
+          src={imageSrc}
+          alt={title}
+          loading="lazy"
+          className="w-full h-80 object-cover transform group-hover:scale-110 transition-transform duration-700"
+        />
+      </div>
+    </div>
     <div className="w-full md:w-1/2 px-4 mt-4 md:mt-0 text-center md:text-left">
       <h2 className="text-2xl font-bold text-red-600 mb-4">{title}</h2>
       <p className="text-lg text-gray-700">{description}</p>
@@ -20,9 +22,33 @@ const ImageDescription = ({ imageSrc, title, description, reverse }) => (
   </div>
 );
 
-// Main Events component
 export default function Events() {
-  const items = [
+  const [events, setEvents] = useState({ upcoming: [], past: [] });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    document.title = "Events | Cornell Class Councils";
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/events/")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch");
+        return res.json();
+      })
+      .then((data) => {
+        setEvents(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Failed to load events:", err);
+        setError(true);
+        setLoading(false);
+      });
+  }, []);
+
+  const featuredItems = [
     {
       title: "Fall Fest",
       imageSrc: "fallfest.jpeg",
@@ -41,12 +67,48 @@ export default function Events() {
       description:
         "An elegant evening of Parisian-themed entertainment, food, and music. Held at Willard Straight Hall with photo booths, caricature artists, card games, and a sweatshirt giveaway. RSVP on CampusGroups!",
     },
+    {
+      title: "Willard Straight Hall 100th Anniversary",
+      imageSrc: "WSH100.jpeg",
+      description:
+        "As we celebrate 100 years, we honor how Willard Straight Hall has become more than its physical space. It is a reflection of who we are and who we become — built on the timeless values of Community, Unity, and Connection.",
+    },
   ];
+
+  const EventsSection = ({ title, items }) => (
+    <>
+      <h2 className="text-3xl font-bold mt-20 mb-8">{title}</h2>
+      {loading ? (
+        <p className="text-gray-500">Loading events...</p>
+      ) : error ? (
+        <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl px-6 py-4">
+          Unable to load events right now. Check our{" "}
+          <a
+            href="https://www.instagram.com/cuclasscouncils"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline font-medium"
+          >
+            Instagram
+          </a>{" "}
+          for the latest updates.
+        </div>
+      ) : items.length > 0 ? (
+        <div className="grid gap-8">
+          {items.map((event, index) => (
+            <EventCard key={index} event={event} />
+          ))}
+        </div>
+      ) : (
+        <p className="text-gray-500">No {title.toLowerCase()} at this time.</p>
+      )}
+    </>
+  );
 
   return (
     <div>
       <Navbar />
-      
+
       {/* Page Header */}
       <div className="flex items-center justify-center py-12">
         <h1 className="text-4xl font-extrabold text-red-700 drop-shadow-lg">Events</h1>
@@ -57,10 +119,11 @@ export default function Events() {
         Discover some of the most exciting student-led events happening throughout the year at Cornell. From festive gatherings to elegant galas, there's something for everyone!
       </p>
 
-      {/* Event Cards */}
+      {/* Featured Events */}
       <div className="bg-gray-50 py-12">
         <div className="container mx-auto px-4">
-          {items.map((item, index) => (
+          <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Featured Events</h2>
+          {featuredItems.map((item, index) => (
             <ImageDescription
               key={index}
               imageSrc={item.imageSrc}
@@ -70,6 +133,12 @@ export default function Events() {
             />
           ))}
         </div>
+      </div>
+
+      {/* Dynamic Calendar Events */}
+      <div className="max-w-6xl mx-auto px-6 py-16">
+        <EventsSection title="Upcoming Events" items={events.upcoming} />
+        <EventsSection title="Past Events" items={events.past} />
       </div>
 
       <Footer />

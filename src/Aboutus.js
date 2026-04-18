@@ -1,8 +1,13 @@
-import React from "react";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 
 function About() {
+  useEffect(() => {
+    document.title = "About Us | Cornell Class Councils";
+  }, []);
+
   return (
     <>
       <Navbar />
@@ -21,7 +26,7 @@ function About() {
         <section className="text-center md:text-left">
           <h2 className="text-3xl font-bold text-red-800 mb-4">Our Mission</h2>
           <p className="text-gray-700 text-lg leading-relaxed">
-            Class Councils is a passionate, student-run organization dedicated to creating inclusive, meaningful, and spirited experiences. We build class identity, champion student voices, and bring joy to Cornell's campus.
+            Class Councils is a student government organization that fosters a sense of unity and pride within each of Cornell University's undergraduate classes. We work to uphold the values of pride and community and implement them in our events, both at the class level and events targeted to all class years. We strive to work with other organizations at Cornell through collaborations, promotions, and highlighting organizations to bring more awareness to Cornell and Cornellians.
           </p>
         </section>
 
@@ -62,12 +67,12 @@ function About() {
           <p className="text-gray-700 text-lg mb-6 max-w-2xl mx-auto">
             Our team includes dedicated students from all four class years, representing diverse backgrounds and majors. Together, we lead with passion and purpose.
           </p>
-          <a
-            href="/team"
+          <Link
+            to="/Team"
             className="inline-block px-6 py-3 bg-red-600 text-white rounded-lg shadow hover:bg-red-700 transition"
           >
             See Our Team
-          </a>
+          </Link>
         </section>
       </div>
 
